@@ -1,5 +1,5 @@
 """Build a static, server-rendered status page with bounded public probes."""
-import argparse, concurrent.futures, html, json, shutil, time, urllib.request, urllib.error
+import argparse, concurrent.futures, html, json, os, subprocess, shutil, time, urllib.request, urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 from status_model import compose, LABELS, GROUPS
@@ -20,10 +20,15 @@ def probe(service):
     code = None
     for attempt in range(2):
         try:
-            request = urllib.request.Request(service["url"], headers={"User-Agent":"REX-Status/1.0 (+https://status.rexcorp.space/)"})
-            with opener.open(request, timeout=8) as response:
-                code = response.status
-                response.read(4096)
+            proxy = os.environ.get('REX_STATUS_PROXY')
+            if proxy:
+                result = subprocess.run(['curl','--proxy',proxy,'--max-time','8','--silent','--output',os.devnull,'--write-out','%{http_code}',service['url']],capture_output=True,text=True,timeout=10)
+                code = int(result.stdout) if result.returncode == 0 and result.stdout.isdigit() else None
+            else:
+                request = urllib.request.Request(service["url"], headers={"User-Agent":"REX-Status/1.0 (+https://status.rexcorp.space/)"})
+                with opener.open(request, timeout=8) as response:
+                    code = response.status
+                    response.read(4096)
         except urllib.error.HTTPError as error:
             code = error.code
             error.close()
