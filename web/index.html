@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>REX Status — состояние проектов</title>
+  <meta name="description" content="Доступность сайтов, REX ID и Telegram ботов REX Corp. Текущие ограничения, результаты проверок и сообщения о восстановлении.">
+  <meta property="og:title" content="REX Status — состояние проектов">
+  <meta property="og:description" content="Что работает сейчас и где есть ограничения доступа.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://status.rexcorp.space/">
+  <link rel="canonical" href="https://status.rexcorp.space/">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">К содержимому</a>
+  <header class="header wrap"><a class="brand" href="/" aria-label="REX Status, главная"><span class="brand-mark">REX</span><span class="brand-title">Status</span></a><a class="hub-link" href="https://hub.rexcorp.space/">Все проекты <span aria-hidden="true">↗</span></a></header>
+  <main id="main" class="wrap">
+    <section class="intro" aria-labelledby="page-title"><h1 id="page-title">Состояние<br>сервисов REX</h1><p>Что работает сейчас, где есть ограничения<br class="desktop-break"> и что мы делаем для восстановления.</p></section>
+    <section class="overview" aria-labelledby="overall-title"><div class="overall-icon" aria-hidden="true">!</div><div><h2 id="overall-title">Есть ограничения доступа</h2><p id="overall-description">Некоторые сайты могут не открываться без VPN.</p></div><a class="overview-link" href="#incidents">Что происходит <span aria-hidden="true">↓</span></a></section>
+    <div class="freshness"><span id="updated">Обновлено: <!--UPDATED--></span><button type="button" id="refresh" hidden>Обновить данные</button></div>
+    <p class="notice" id="data-notice" role="status" hidden></p>
+    <section class="components" aria-labelledby="services-title"><div class="section-heading"><h2 id="services-title">Наши сервисы</h2><span class="muted">Проверки примерно каждые 15 минут</span></div>
+      <div class="filters" role="group" aria-label="Показать сервисы"><button type="button" data-filter="all" aria-pressed="true">Все</button><button type="button" data-filter="web" aria-pressed="false">Сайты и приложения</button><button type="button" data-filter="identity" aria-pressed="false">Вход и панели</button><button type="button" data-filter="telegram" aria-pressed="false">Telegram</button></div>
+      <ul class="service-list" id="service-list"><!--SERVICES--></ul>
+      <p class="method-note">Проверка подтверждает ответ страницы или подключение бота к Telegram. Она не проверяет каждую функцию и не гарантирует доступ из вашей сети.</p>
+    </section>
+    <section id="incidents" class="incidents" aria-labelledby="incident-title"><div class="section-heading"><h2 id="incident-title">Что происходит</h2><span class="incident-count">Известная проблема</span></div><!--INCIDENTS--></section>
+    <section class="help" aria-labelledby="help-title"><h2 id="help-title">Если у вас не открывается сайт</h2><details><summary>Сайт отмечен как отвечающий, но у меня не работает</summary><p>Проверка выполняется из отдельной сети. Ограничения вашего провайдера могут отличаться. Пока сообщение о проблеме доступа открыто, даже отвечающий сайт может не загружаться без VPN.</p></details><details><summary>Нужно ли заново регистрироваться в REX ID?</summary><p>Нет. Ошибка подключения не означает, что аккаунт удалён. Используйте существующий REX ID. На iPhone вход с ключом доступа уже проверен в Safari с VPN.</p></details><details><summary>Telegram бот работает, а сайт не открывается. Это нормально?</summary><p>Да. Подключение ботов к Telegram и доступ к сайтам проверяются отдельно. У отдельных команд бота могут быть дополнительные зависимости.</p></details><details><summary>Что означает «Нет свежих данных»?</summary><p>Последняя проверка устарела или ещё не получена. Это не означает автоматически, что сервис выключен. Время обновления всегда указано над списком.</p></details></section>
+    <noscript><p class="notice">Показан снимок на время, указанное выше. Для новой проверки перезагрузите страницу. Список доступен без JavaScript.</p></noscript>
+  </main>
+  <footer class="footer wrap"><span>REX Corp</span><p>Страница статуса размещена отдельно от основных сервисов.</p><a href="mailto:support@rexcorp.space">Сообщить о проблеме</a></footer>
+</body>
+</html>
