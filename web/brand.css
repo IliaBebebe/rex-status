@@ -1,0 +1,48 @@
+/* REX Corp identity. Layout and status behaviour remain in the base files. */
+:root {
+  color-scheme: dark;
+  --bg: #07090f;
+  --paper: #101722;
+  --ink: #f7f8fb;
+  --muted: #aab1c3;
+  --line: #293446;
+  --blue: #59d6ff;
+  --amber: #f6d365;
+  --amber-bg: #292315;
+  --green: #9df06f;
+  --red: #ff9da3;
+  --radius: 8px;
+}
+.brand { gap: 24px; }
+.brand-logo { display: block; width: 176px; height: auto; flex-shrink: 0; }
+.brand-title { color: var(--muted); font-size: 14px; line-height: 20px; font-weight: 500; }
+.hub-link { white-space: nowrap; }
+.intro { padding-block: 40px; }
+.overview { border-color: #5b4b25; }
+.overall-icon { border-color: currentColor; }
+.overview h2,.overview-link { color: var(--amber); }
+.overview p { color: #e2d5b1; }
+.filters button:hover { background: #1a2433; color: var(--ink); }
+.filters button[aria-pressed=true] { border-color: #226177; background: #0a2c3c; color: var(--blue); }
+.operational { background: #192818; }
+.outage { background: #321c24; }
+.unknown { background: #1a2433; }
+.incident-stage { background: #0a2c3c; color: var(--blue); }
+.advice { background: #162335; }
+.overview.is-outage { background: #321c24; border-color: #6b3b47; }
+.overview.is-unknown { background: #1a2433; border-color: var(--line); }
+.overview.is-operational { background: #192818; border-color: #3b5832; }
+.footer-brand { flex-shrink: 0; }
+.footer-brand img { display: block; width: 112px; height: auto; }
+.footer>a:last-child { white-space: nowrap; }
+@media(max-width:760px) {
+  .header { align-items: start; gap: 16px; }
+  .brand { flex-direction: column; align-items: start; gap: 8px; }
+  .brand-logo { width: 144px; }
+  .brand-title { font-size: 12px; line-height: 16px; }
+  .hub-link { margin-top: 8px; font-size: 12px; line-height: 16px; }
+  .intro { padding-top: 24px; }
+}
+@media(max-width:380px) {
+  .intro h1 { font-size: 30px; line-height: 36px; }
+}

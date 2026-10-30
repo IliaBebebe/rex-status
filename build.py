@@ -68,7 +68,7 @@ def build(run_probes=True, heartbeat_path=None):
     data = compose(services, incidents, probes, heartbeat)
     dest = ROOT/'dist'
     dest.mkdir(exist_ok=True)
-    for name in ('style.css', 'app.js', 'favicon.svg', '404.html'):
+    for name in ('style.css', 'brand.css', 'app.js', 'rex-corp-logo.png', '404.html'):
         shutil.copyfile(ROOT/'web'/name, dest/name)
     if (ROOT/'web'/'fonts').is_dir():
         shutil.copytree(ROOT/'web'/'fonts', dest/'fonts', dirs_exist_ok=True)

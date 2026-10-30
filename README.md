@@ -2,6 +2,8 @@
 
 Public user-facing status page: https://status.rexcorp.space/
 
+REX Corp branding uses the original corporate logo and homepage palette. See [BRANDING.md](BRANDING.md) before changing identity assets or theme colours.
+
 Source: `C:\Users\user\Desktop\REX_PROJECTS\rex-status`.
 Production is static GitHub Pages, independent of the home server, Windows and Cloudflare's HTTP proxy. Cloudflare is DNS-only for this hostname.
 
