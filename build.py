@@ -6,6 +6,11 @@ from status_model import compose, LABELS, GROUPS
 
 ROOT = Path(__file__).resolve().parent
 
+def human_date(value):
+    date = datetime.fromisoformat(value)
+    months = ('января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря')
+    return f'{date.day} {months[date.month-1]} {date.year}'
+
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, request, fp, code, msg, headers, newurl):
         return None
@@ -43,8 +48,8 @@ def incident_html(incidents):
         return '<p class="muted">Открытых сообщений о сбоях нет.</p>'
     blocks = []
     for incident in active:
-        updates = ''.join(f'<li><time datetime="{u["date"]}">30 октября 2026</time><div><h4>{html.escape(u["title"])}</h4><p>{html.escape(u["text"])}</p></div></li>' for u in incident["updates"])
-        blocks.append(f'<article class="incident"><div class="incident-top"><span class="incident-stage">{html.escape(incident["stage"])}</span><time datetime="{incident["date"]}">30 октября 2026</time></div><h3>{html.escape(incident["title"])}</h3><p>{html.escape(incident["summary"])}</p><div class="advice"><strong>Что можно сделать сейчас</strong><p>{html.escape(incident["advice"])}</p></div><p>{html.escape(incident["unaffected"])}</p><details><summary>Ход работ</summary><ol class="timeline">{updates}</ol></details></article>')
+        updates = ''.join(f'<li><time datetime="{u["date"]}">{human_date(u["date"])}</time><div><h4>{html.escape(u["title"])}</h4><p>{html.escape(u["text"])}</p></div></li>' for u in incident["updates"])
+        blocks.append(f'<article class="incident"><div class="incident-top"><span class="incident-stage">{html.escape(incident["stage"])}</span><time datetime="{incident["date"]}">{human_date(incident["date"])}</time></div><h3>{html.escape(incident["title"])}</h3><p>{html.escape(incident["summary"])}</p><div class="advice"><strong>Что можно сделать сейчас</strong><p>{html.escape(incident["advice"])}</p></div><p>{html.escape(incident["unaffected"])}</p><details><summary>Ход работ</summary><ol class="timeline">{updates}</ol></details></article>')
     return ''.join(blocks)
 
 def build(run_probes=True, heartbeat_path=None):

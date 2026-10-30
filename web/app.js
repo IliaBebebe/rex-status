@@ -7,6 +7,49 @@
   let snapshot = null;
   let filter = 'all';
   let busy = false;
+  let incidentSignature = null;
+  function element(tag, text, className) {
+    const node = document.createElement(tag);
+    if (text) node.textContent = text;
+    if (className) node.className = className;
+    return node;
+  }
+  function dateElement(value) {
+    const node = element('time');
+    node.dateTime = value;
+    node.textContent = new Intl.DateTimeFormat('ru-RU', {day:'numeric', month:'long', year:'numeric', timeZone:'Europe/Moscow'}).format(new Date(value + 'T12:00:00Z'));
+    return node;
+  }
+  function renderIncidents(incidents) {
+    const signature = JSON.stringify(incidents);
+    if (signature === incidentSignature) return;
+    incidentSignature = signature;
+    const section = document.querySelector('#incidents');
+    const active = incidents.filter(item => item.active);
+    for (const child of [...section.children].slice(1)) child.remove();
+    section.querySelector('.incident-count').textContent = active.length ? 'Известная проблема' : 'Нет открытых сообщений';
+    if (!active.length) section.append(element('p', 'Открытых сообщений о сбоях нет.', 'muted'));
+    for (const item of active) {
+      const article = element('article', null, 'incident');
+      const top = element('div', null, 'incident-top');
+      top.append(element('span', item.stage, 'incident-stage'), dateElement(item.date));
+      const advice = element('div', null, 'advice');
+      advice.append(element('strong', 'Что можно сделать сейчас'), element('p', item.advice));
+      article.append(top, element('h3', item.title), element('p', item.summary), advice, element('p', item.unaffected));
+      const details = element('details');
+      const timeline = element('ol', null, 'timeline');
+      for (const update of item.updates) {
+        const line = element('li');
+        const body = element('div');
+        body.append(element('h4', update.title), element('p', update.text));
+        line.append(dateElement(update.date), body);
+        timeline.append(line);
+      }
+      details.append(element('summary', 'Ход работ'), timeline);
+      article.append(details);
+      section.append(article);
+    }
+  }
   function applyFilter() {
     for (const row of list.children) row.hidden = filter !== 'all' && row.dataset.group !== filter;
   }
@@ -48,11 +91,12 @@
     document.querySelector('#updated').replaceChildren(document.createTextNode('Обновлено: '), time);
     const active = data.incidents.some(incident => incident.active);
     const overview = document.querySelector('.overview');
-    overview.className = 'overview' + (stale ? ' is-unknown' : outages ? ' is-outage' : !active && !unknown && !limited ? ' is-operational' : '');
+    overview.className = 'overview' + (stale ? ' is-unknown' : outages ? ' is-outage' : !active && unknown ? ' is-unknown' : !active && !limited ? ' is-operational' : '');
     document.querySelector('#overall-title').textContent = stale ? 'Нет свежей сводки' : outages ? 'Есть недоступные сервисы' : active || limited ? 'Есть ограничения доступа' : unknown ? 'Не все проверки получены' : 'Сервисы отвечают';
     document.querySelector('#overall-description').textContent = stale ? 'Показаны последние сохранённые данные. Известная проблема доступа остаётся открытой.' : active ? 'Некоторые сайты могут не открываться без VPN.' : unknown ? 'Для части сервисов ожидаем новую проверку.' : 'По последним проверкам открытых ограничений нет.';
     notice.hidden = !stale;
     if (stale) notice.textContent = 'Сводка не обновлялась больше 45 минут. Состояние сервисов сейчас не подтверждено. Сохранённые сообщения о сбоях доступны ниже.';
+    renderIncidents(data.incidents);
     applyFilter();
   }
   async function update(manual = false) {
