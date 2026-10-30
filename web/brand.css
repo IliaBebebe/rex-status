@@ -35,6 +35,7 @@
 .footer-brand { flex-shrink: 0; }
 .footer-brand img { display: block; width: 112px; height: auto; }
 .footer>a:last-child { white-space: nowrap; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 16px 24px; }
 @media(max-width:760px) {
   .header { align-items: start; gap: 16px; }
   .brand { flex-direction: column; align-items: start; gap: 8px; }
