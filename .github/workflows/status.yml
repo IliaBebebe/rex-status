@@ -42,3 +42,14 @@ jobs:
       - name: Publish
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Enforce HTTPS when the custom certificate is ready
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if curl --fail --silent --max-time 12 https://status.rexcorp.space/ -o /tmp/rex-status-https.html; then
+            gh api repos/IliaBebebe/rex-status/pages --method PUT -F https_enforced=true
+            echo 'Custom-domain HTTPS verified and enforced'
+          else
+            echo 'Custom-domain certificate is still provisioning; retry on the next scheduled publication'
+          fi

@@ -19,6 +19,8 @@ Home `rex-status-publish.timer` produces the bot heartbeat on branch `pulse` aro
 
 GitHub Actions on `main`, manual dispatch, or a 15-minute schedule reads that heartbeat, performs external checks, renders HTML + JSON and publishes Pages. Schedules may be delayed by GitHub. When the home server is unavailable, the independent external checks and status page continue; bot states become unknown after expiry.
 
+After publication, the workflow tests the custom hostname with strict TLS verification and enables HTTPS enforcement once the certificate is ready. Pending certificate provisioning is retried on later scheduled runs.
+
 ## Local checks
 
 ```powershell
