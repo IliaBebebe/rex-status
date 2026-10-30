@@ -74,6 +74,16 @@ def build(run_probes=True, heartbeat_path=None):
         shutil.copytree(ROOT/'web'/'fonts', dest/'fonts', dirs_exist_ok=True)
     (dest/'status.json').write_text(json.dumps(data, ensure_ascii=False, separators=(',',':')), encoding='utf-8')
     page = (ROOT/'web'/'index.html').read_text(encoding='utf-8')
+    active = any(i.get('active') for i in incidents)
+    down = any(s['status']=='outage' for s in data['services'])
+    unknown = any(s['status']=='unknown' for s in data['services'])
+    title = 'Есть недоступные сервисы' if down else 'Есть ограничения доступа' if active else 'Не все проверки получены' if unknown else 'Сервисы отвечают'
+    description = 'Некоторые сайты могут не открываться без VPN.' if active else 'Для части сервисов ожидаем новую проверку.' if unknown else 'Часть сервисов не отвечает на проверку.' if down else 'По последним проверкам открытых ограничений нет.'
+    state_class = ' is-outage' if down else '' if active else ' is-unknown' if unknown else ' is-operational'
+    page = page.replace('class="overview"',f'class="overview{state_class}"')
+    page = page.replace('Есть ограничения доступа',title).replace('Некоторые сайты могут не открываться без VPN.',description)
+    if not active:
+        page = page.replace('Известная проблема','Нет открытых сообщений')
     page = page.replace('<!--SERVICES-->', ''.join(service_html(item) for item in data['services']))
     page = page.replace('<!--INCIDENTS-->', incident_html(incidents))
     stamp = datetime.fromisoformat(data['generatedAt']).astimezone(timezone.utc).strftime('%d.%m.%Y %H:%M UTC')
