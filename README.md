@@ -1,3 +1,7 @@
+# Current production: home Nginx
+
+At the user's request, hosting moved to home Ubuntu with Nginx and the existing Certbot certificate. Runtime source `/opt/rex-status`, public root `/var/www/rex-status`, refresh timer `rex-status-refresh.timer`. GitHub Pages and its workflow are disabled. GitHub is source storage only. The historical hosting details below are superseded.
+
 # REX Status
 
 Public user-facing status page: https://status.rexcorp.space/
